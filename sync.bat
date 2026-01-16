@@ -4,14 +4,21 @@ cls
 echo --------------------------------------------------
 echo RADIO BAYELSA - GITHUB LIVE SYNC ENGINE
 echo --------------------------------------------------
-echo Status: Pushing latest video chunks to GitHub...
+echo Status: Syncing EVERYTHING to GitHub...
 echo.
+
+:: 1. This grabs ALL changes (HTML, BAT, and HLS files)
 git add .
-git commit -m "Live Stream Update"
+
+:: 2. This packages them up
+git commit -m "Radio Live Update %date% %time%"
+
+:: 3. This sends them to the web
 git push origin main
+
 echo.
 echo --------------------------------------------------
-echo Success! Next update in 10 seconds. Keep this window open.
+echo Update Complete. Waiting 10 seconds...
 echo --------------------------------------------------
 timeout /t 10
 goto loop

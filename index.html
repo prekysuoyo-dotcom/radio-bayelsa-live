@@ -1,24 +1,45 @@
-@echo off
-:loop
-cls
-echo --------------------------------------------------
-echo RADIO BAYELSA - GITHUB LIVE SYNC ENGINE
-echo --------------------------------------------------
-echo Status: Syncing HLS video folders...
-echo.
-
-:: This tells git to include the new subfolders created by MediaMTX
-git add --all hls/
-
-:: This commits the changes
-git commit -m "Radio Sync %date% %time%"
-
-:: This pushes to the web
-git push origin main
-
-echo.
-echo --------------------------------------------------
-echo Update Complete. Waiting 10 seconds...
-echo --------------------------------------------------
-timeout /t 10
-goto loop
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Bayelsa 97.1 - Live</title>
+    <link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; }
+        .main-container { display: flex; flex-direction: column; height: 100vh; border: 4px solid #d4af37; box-sizing: border-box; }
+        .header { background: linear-gradient(90deg, #004d40 0%, #002d26 100%); padding: 15px; text-align: center; border-bottom: 2px solid #d4af37; }
+        .header h1 { margin: 0; font-family: 'Cinzel', serif; color: #d4af37; font-size: 24px; }
+        .video-container { flex-grow: 1; position: relative; background: #000; }
+        .video-js { width: 100% !important; height: 100% !important; }
+        .live-tag { position: absolute; top: 20px; right: 20px; background: red; padding: 5px 15px; font-weight: bold; border-radius: 4px; z-index: 10; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.5;} 100% {opacity: 1;} }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="header">
+            <h1>RADIO BAYELSA 97.1</h1>
+            <div style="color: #d4af37; font-size: 10px; letter-spacing: 3px;">THE JEWEL OF THE NIGER DELTA</div>
+        </div>
+        <div class="video-container">
+            <div class="live-tag">🔴 LIVE</div>
+            <video id="radio-player" class="video-js vjs-big-play-centered" controls preload="auto" data-setup='{}'>
+                <source src="hls/live/gloryfm/index.m3u8" type="application/x-mpegURL">
+            </video>
+        </div>
+    </div>
+    <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
+    <script>
+        var player = videojs('radio-player');
+        player.on('error', function() {
+            setTimeout(function() {
+                player.src({ src: 'hls/live/gloryfm/index.m3u8', type: 'application/x-mpegURL' });
+                player.load();
+                player.play();
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
